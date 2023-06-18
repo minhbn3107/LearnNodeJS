@@ -18,8 +18,8 @@ app.use(express.json());
 // Template engine
 app.engine(
     'hbs',
-            handlebars.engine({
-                extname: '.hbs',
+    handlebars.engine({
+        extname: '.hbs',
     }),
 );
 app.set('view engine', 'hbs');
