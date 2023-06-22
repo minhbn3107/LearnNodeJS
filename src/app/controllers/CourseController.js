@@ -20,12 +20,11 @@ class CourseController {
 
     // [POST] /couses/store
     store(req, res, next) {
-        const formData = req.body;
-        formData.img = `https://i.ytimg.com/vi/${formData.videoId}/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAXyNNdbtP4JQXkx-FHJ-zXi-2bxw`;
-        const course = new Course(formData);
+        req.body.img = `https://i.ytimg.com/vi/${req.body.videoId}/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAXyNNdbtP4JQXkx-FHJ-zXi-2bxw`;
+        const course = new Course(req.body);
         course
             .save()
-            .then(() => res.redirect('/'))
+            .then(() => res.redirect('/me/stored/courses'))
             .catch((errror) => {});
     }
 
@@ -49,10 +48,32 @@ class CourseController {
 
     // [DELETE] /couses/:id
     destroy(req, res, next) {
+        Course.delete({ _id: req.params.id })
+            .then(() => res.redirect('back'))
+            .catch(next);
+    }
+
+    // [DELETE] /couses/:id/force
+    forceDestroy(req, res, next) {
         Course.deleteOne({ _id: req.params.id })
             .then(() => res.redirect('back'))
             .catch(next);
     }
+
+    // [PATCH] /couses/:id/restore
+    restore(req, res, next) {
+        Course.restore({ _id: req.params.id })
+            .then(() => res.redirect('back'))
+            .catch(next);
+    }
+
+    // trashCourses(req,res,next) {
+    //     Course.findDeleted({})
+    //         .then(courses => {
+    //             const deletedCourses = courses.filter(course => course.deleted === true);
+    //             res.render('me/trash-courses', {
+    //                 courses:multipMongooseToObject(courses) }) })
+    //         .catch(next); }
 }
 
 module.exports = new CourseController();

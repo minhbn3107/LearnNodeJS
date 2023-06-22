@@ -1,13 +1,15 @@
 const express = require('express');
 const router = express.Router();
 
-const coursesController = require('../app/controllers/CourseController');
+const courseController = require('../app/controllers/CourseController');
 
-router.get('/create', coursesController.create);
-router.post('/store', coursesController.store);
-router.get('/:id/edit', coursesController.edit);
-router.put('/:id', coursesController.update);
-router.delete('/:id', coursesController.destroy);
-router.get('/:slug', coursesController.show);
+router.get('/create', courseController.create);
+router.post('/store', courseController.store);
+router.get('/:id/edit', courseController.edit);
+router.put('/:id', courseController.update);
+router.patch('/:id/restore', courseController.restore);
+router.delete('/:id', courseController.destroy);
+router.delete('/:id/force', courseController.forceDestroy);
+router.get('/:slug', courseController.show);
 
 module.exports = router;
