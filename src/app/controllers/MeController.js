@@ -16,7 +16,15 @@ class MeController {
 
     // [GET] /me/stored/courses --> Do this instead of method upon because plugin that failed
     storedCourses(req, res, next) {
-        Promise.all([Course.find({}), Course.findDeleted({})])
+        let courseQuery = Course.find({});
+
+        if (req.query.hasOwnProperty('_sort')) {
+            courseQuery = courseQuery.sort({
+                [req.query.column]: req.query.type,
+            });
+        }
+
+        Promise.all([courseQuery, Course.findDeleted({})])
             .then(([courses, deletedCourses]) => {
                 const deletedCount = deletedCourses.filter(
                     (course) => course.deleted,

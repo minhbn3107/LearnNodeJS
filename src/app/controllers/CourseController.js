@@ -21,11 +21,12 @@ class CourseController {
     // [POST] /couses/store
     store(req, res, next) {
         req.body.img = `https://i.ytimg.com/vi/${req.body.videoId}/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAXyNNdbtP4JQXkx-FHJ-zXi-2bxw`;
+
         const course = new Course(req.body);
         course
             .save()
             .then(() => res.redirect('/me/stored/courses'))
-            .catch((errror) => {});
+            .catch(next);
     }
 
     // [GET] /couses/:id/edit
